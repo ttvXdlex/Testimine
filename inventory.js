@@ -34,14 +34,15 @@ function restock(stock, deliveries) {
     if (!Number.isInteger(d.qty) || d.qty <= 0) {
       throw new Error('qty must be a positive whole number');
     }
-    result[d.sku] = (result[d.sku] || 0) + d.qty;
+    const currentQty = Object.prototype.hasOwnProperty.call(result, d.sku) ? result[d.sku] : 0;
+    result[d.sku] = currentQty + d.qty;
   }
   return result;
 }
 
 function pick(stock, sku, qty) {
   assertSku(sku);
-  if (!(sku in stock)) {
+  if (!Object.prototype.hasOwnProperty.call(stock, sku)) {
     throw new Error('unknown sku');
   }
   if (!Number.isInteger(qty) || qty <= 0 || qty > stock[sku]) {
@@ -53,15 +54,13 @@ function pick(stock, sku, qty) {
 }
 
 function findDuplicateSkus(items) {
-  const duplicates = [];
-  for (let i = 0; i < items.length; i++) {
-    for (let j = i + 1; j < items.length; j++) {
-      if (items[i].sku === items[j].sku && !duplicates.includes(items[i].sku)) {
-        duplicates.push(items[i].sku);
-      }
-    }
+  const seen = new Set();
+  const duplicates = new Set();
+  for (const item of items) {
+    if (seen.has(item.sku)) duplicates.add(item.sku);
+    seen.add(item.sku);
   }
-  return duplicates;
+  return [...duplicates];
 }
 
 module.exports = { restock, pick, findDuplicateSkus };
