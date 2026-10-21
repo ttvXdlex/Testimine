@@ -10,8 +10,6 @@
 //   - daily maximum: 12.00 € in zone A, 6.00 € in zone B – a day never costs more than that
 //   - options.resident === true → 50 % off the final price (after the daily maximum)
 //   - result is rounded to 2 decimals
-//
-// NOTE: this file contains TWO intentional bugs. Your tests should find them.
 
 const RATE = { A: 2.0, B: 1.0 };
 const DAILY_MAX = { A: 12.0, B: 6.0 };
@@ -27,14 +25,19 @@ function parkingFee(minutes, zone, options = {}) {
   if (minutes <= FREE_MINUTES) {
     return 0;
   }
-  const hours = Math.ceil((minutes - 15) / 60);
+
+  // Fixed B-01: whole stay started hours
+  const hours = Math.ceil(minutes / 60);
   let fee = hours * RATE[zone];
-  if (options.resident) {
-    fee = fee * 0.5;
-  }
+
+  // Fixed B-02: daily max before resident discount
   if (fee > DAILY_MAX[zone]) {
     fee = DAILY_MAX[zone];
   }
+  if (options.resident) {
+    fee = fee * 0.5;
+  }
+
   return Math.round(fee * 100) / 100;
 }
 
