@@ -14,7 +14,7 @@ Kõik 9 nõutud punkti on esitatud allpool kirja sisus ning manustena.
 ---
 
 ### 1. Repositoorium ja commit'id
-- **Repositooriumi link:** `https://github.com/<sinu-kasutaja>/automaattestimine` *(asenda oma GitHubi repo lingiga)*
+- **Repositooriumi link:** `https://github.com/ttvXdlex/Testimine`
 - **Nõutud commit'id repos:**
   1. `1319584 Add parking fee tests (14 cases, 2 bugs found)`
   2. `69e40cb Fix B-01 hours calculation, B-02 resident discount after daily max`
